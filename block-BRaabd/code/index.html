@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            img: '',
+            default: '../assets/basketball.jpg',
+          };
+        }
+
+        handleClickImg1 = () => {
+          this.setState({
+            img: '../assets/basketball.jpg',
+          });
+        };
+
+        handleClickImg2 = () => {
+          this.setState({
+            img: '../assets/pubg.jpeg',
+          });
+        };
+
+        handleClickImg3 = () => {
+          this.setState({
+            img: '../assets/tiger.jpg',
+          });
+        };
+        handleClickImg4 = () => {
+          this.setState({
+            img: '../assets/phone.jpg',
+          });
+        };
+        handleClickImg5 = () => {
+          this.setState({
+            img: '../assets/laptop.jpg',
+          });
+        };
+
+        handleClickImg6 = () => {
+          this.setState({
+            img: '../assets/cricket.jpg',
+          });
+        };
+
+        render() {
+          return (
+            <div className="container text-center">
+              <button onClick={this.handleClickImg1}>basketball</button>
+              <button onClick={this.handleClickImg2}>PubG</button>
+              <button onClick={this.handleClickImg3}>Tiger</button>
+              <button onClick={this.handleClickImg4}>Phone</button>
+              <button onClick={this.handleClickImg5}>Laptop</button>
+              <button onClick={this.handleClickImg6}>Cricket</button>
+              <div>
+                <img src={this.state.img || this.state.default} alt="pics" />
+              </div>
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
