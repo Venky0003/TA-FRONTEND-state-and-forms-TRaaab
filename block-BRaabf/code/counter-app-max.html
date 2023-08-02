@@ -27,14 +27,14 @@
             counter: 0,
             default: 0,
             active: 0,
-            minValue: 5,
-            max: 0,
+            max: 15,
           };
         }
 
         handleIncrement = () =>{
+          const {active, max, counter} = this.state
           this.setState({
-            counter: this.state.counter + this.state.active,
+            counter: counter + active > max ? counter: counter + active,
           });
       }
 
@@ -53,12 +53,6 @@
       setActiveValue = (value) => {
         this.setState({
           active: value,
-        });
-      };
-
-      setMaxValue = () => {
-        this.setState({
-          max: maxValue,
         });
       };
 
@@ -83,12 +77,15 @@
             </div>
               <div>
               <h3>Max</h3>
-              {maxValues.map((maxValue) => (
+              {maxValues.map((max) => (
                 <button
-                  key={maxValue}
-                  onClick={() => this.setActiveValue(maxValue)}
+                  key={max}
+                  className={this.state.max === max ? 'active' : ''}
+                  onClick={() => {
+                    this.setState({max: max})
+                  }}
                 >
-                  {maxValue === this.state.active ? ` ${maxValue}` : maxValue}
+                  {max}
                 </button>
               ))}
             </div>
