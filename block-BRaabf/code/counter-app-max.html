@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- React and ReactDOM -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <!-- babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            counter: 0,
+            default: 0,
+            active: 0,
+            minValue: 5,
+            max: 0,
+          };
+        }
+
+        handleIncrement = () =>{
+          this.setState({
+            counter: this.state.counter + this.state.active,
+          });
+      }
+
+      handleDecrement = () => {
+        this.setState({
+          counter: this.state.counter - this.state.active,
+        });
+      };
+
+      handleReset = () => {
+        this.setState({
+          counter: 0,
+        });
+      };
+
+      setActiveValue = (value) => {
+        this.setState({
+          active: value,
+        });
+      };
+
+      setMaxValue = () => {
+        this.setState({
+          max: maxValue,
+        });
+      };
+
+      render() {
+      let values = [5, 10, 15];
+      let maxValues = [15, 100, 200];
+      return (
+        <div className="container text-center p-top-50">
+          <p>{this.state.counter}</p>
+          <div className="flex justify-between text-center box ">
+            <div>
+              <h3>Steps</h3>
+              {values.map((value) => (
+                <button
+                  className={this.state.active === value ? 'active' : ''}
+                  key={value}
+                  onClick={() => this.setActiveValue(value)}
+                >
+                  {value === this.state.active ? ` ${value}` : value}
+                </button>
+              ))}
+            </div>
+              <div>
+              <h3>Max</h3>
+              {maxValues.map((maxValue) => (
+                <button
+                  key={maxValue}
+                  onClick={() => this.setActiveValue(maxValue)}
+                >
+                  {maxValue === this.state.active ? ` ${maxValue}` : maxValue}
+                </button>
+              ))}
+            </div>
+          </div>
+          <button className="ops-btn m-top-30" onClick={this.handleIncrement}>
+            Increment
+          </button>
+          <button className="ops-btn m-top-30" onClick={this.handleDecrement}>
+            Decrement
+          </button>
+          <button className="ops-btn m-top-30" onClick={this.handleReset}>
+            Reset
+          </button>
+        </div>
+      )
+      }
+    }
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
