@@ -40,11 +40,6 @@
             }
             return acc;
           }, []);
-          let all = data.reduce((acc, foods) => {
-            acc = acc.concat(foods.id);
-            return acc;
-          }, []);
-          console.log(all);
 
           let allItems;
           if (!this.state.activeItem) {
