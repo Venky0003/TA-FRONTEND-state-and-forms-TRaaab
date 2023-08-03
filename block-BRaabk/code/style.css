@@ -1,0 +1,217 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* custom styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: rgb(241, 247, 247);
+}
+
+.container {
+  width: 1360px;
+  max-width: 100%;
+  padding: 0 32px;
+  margin: 0 auto;
+}
+
+.fs-25 {
+  font-size: 25px;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px; 
+  padding: 5px;
+}
+
+.grid-item {
+    /* border: 1px solid #ccc;  */
+    padding: 10px;
+}
+
+li {
+  font-size: 25px;
+}
+
+.active {
+ border-bottom: 2px solid black;
+}
+
+.img{
+    /* width: auto; */
+    width: 250px;
+    height: 200px;
+    border: 2px solid rgba(200, 181, 74, 0.887);
+}
+
+.title{
+   text-transform: capitalize; 
+}
+
+.text{
+    margin-left: 25px;
+}
+
+h1{
+    font-size: 38px;
+    width: 160px;
+    margin: 0 auto;
+   border-bottom: 2px solid rgb(220, 189, 14);
+}
+
+.list-box{
+    width: 400px;
+    margin: 30px auto;
+    color: rgba(245, 213, 33, 0.891);
+}

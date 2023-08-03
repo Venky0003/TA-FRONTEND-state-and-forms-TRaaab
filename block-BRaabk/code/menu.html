@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- React and ReactDOM -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <!-- babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div class="container" id="root"></div>
+    <script src="./data.js"></script>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            activeItem: '',
+          };
+        }
+        handleClick = (food) => {
+          this.setState({
+            activeItem: food === this.state.activeItem ? '' : food,
+          });
+        };
+        render() {
+          let foodCategory = data.reduce((acc, food) => {
+            if (!acc.includes(food.category)) {
+              acc.push(food.category);
+            }
+            return acc;
+          }, []);
+
+          let allItems;
+          if (!this.state.activeItem) {
+            allItems = data.map((item) => ({
+              title: item.title,
+              category: item.category,
+              price: item.price,
+              desc: item.desc,
+              img: item.img,
+            }));
+          } else {
+            allItems = data.filter(
+              (item) => item.category === this.state.activeItem
+            );
+          }
+          console.log(allItems);
+          //   console.log(foodCategory)
+          return (
+            <>
+            <h1>Our Menu</h1>
+              <ul className="list-box flex justify-between">
+                <li
+                  onClick={() => this.handleClick('')}
+                  className={!this.state.activeItem ? 'active' : ''}
+                >
+                  All
+                </li>
+                {foodCategory.map((food, index) => {
+                  return (
+                    <li
+                      className={food === this.state.activeItem ? 'active' : ''}
+                      onClick={() => this.handleClick(food)}
+                      key={index}
+                    >
+                      {food}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="grid-container">
+                {allItems.map((item) => {
+                  return (
+                    <div className="grid-item">
+                      <div className="flex justify-between">
+                        <div>
+                          <img className="img" src={item.img} alt="item" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between text">
+                            <h2 className="title fs-25">{item.title}</h2>
+                            <h4>{item.price}</h4>
+                          </div>
+                          <p className="text">{item.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          );
+        }
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
