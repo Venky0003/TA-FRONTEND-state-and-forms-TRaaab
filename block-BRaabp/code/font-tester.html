@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root" class="container"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            text: '',
+            fontSize: 16,
+          };
+        }
+
+        handleChange = (event) => {
+          this.setState({
+            text: event.target.value,
+          });
+        };
+
+        handleFontSizeChange = (event) => {
+          this.setState({
+            fontSize: event.target.value,
+          });
+        };
+
+        render() {
+          const fontStyles = [
+            { fontFamily: 'Arial' },
+            { fontFamily: 'Verdana' },
+            { fontFamily: 'Helvetica' },
+            { fontFamily: 'Times New Roman' },
+            { fontFamily: 'Courier New' },
+            { fontFamily: 'Georgia' },
+            { fontFamily: 'Impact' },
+            { fontFamily: 'Comic Sans MS' },
+            { fontFamily: 'Tahoma' },
+            { fontFamily: 'Verdana' },
+          ];
+          return (
+            <>
+            <h1>Font Tester</h1>
+              <div>
+                <input
+                  onChange={this.handleChange}
+                  value={this.state.text}
+                  type="text"
+                  placeholder="Enter text to see in different font styles"
+                />
+                <input
+                  type="range"
+                  min="10"
+                  max="40"
+                  value={this.state.fontSize}
+                  onChange={this.handleFontSizeChange}
+                />
+                <span>Font Size: {this.state.fontSize}px</span>
+              </div>
+              <div className="grid-container">
+                {fontStyles.map((font, i) => {
+                  return (
+                    <div
+                      key={i}
+                      className="box grid-item"
+                      style={{ ...font, fontSize: `${this.state.fontSize}px` }}
+                    >
+                      <h2> {font.fontFamily} </h2>
+                      <p>{this.state.text} </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          );
+        }
+      }
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
