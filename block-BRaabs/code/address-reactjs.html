@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+   
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div class="container" id="root"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            address: '',
+            billingAsShippingAddress: false,
+            errors: {
+              address: '',
+            },
+          };
+        }
+
+        handleInput = ({ target }) => {
+          const { name, value } = target;
+          let errors = this.state.errors;
+
+          if (name === 'address') {
+            if (value.length < 8) {
+              errors.address = 'You need to enter at least 8 characters.';
+            } else {
+              errors.address = '';
+            }
+          }
+          this.setState({ errors, [name]: value });
+        };
+
+        handleChange = (event) => {
+          this.setState({
+            billingAsShippingAddress: event.target.checked,
+          });
+        };
+
+        handleSubmit = () => {
+          alert('success');
+        };
+
+        render() {
+          const { billingAsShippingAddress } = this.state;
+            let { address } = this.state.errors;
+          return (
+            <>
+              <form onSubmit={this.handleSubmit}>
+                <div className="flex">
+                  <div className=" flex-48 shipping-address margin-center">
+                    <h2 className="fs-28">Shipping Address</h2>
+                    <label htmlFor="shipping-address">Address</label>
+                    <input
+                      type="text"
+                      name="address"
+                      id="shipping-address"
+                      value={this.state.address}
+                      onChange={this.handleInput}
+                      className={address && 'error'}
+                    />
+                    <span className="error">{address}</span>
+                    <label htmlFor="shipping-zipcode">Zip/Postal code</label>
+                    <input
+                      type="number"
+                      name="shipping-zipcode"
+                      id="shipping-zipcode"
+                    />
+                    <label htmlFor="shipping-city">City</label>
+                    <input
+                      type="text"
+                      name="shipping-city"
+                      id="shipping-city"
+                    />
+                    <label htmlFor="shipping-country">Country</label>
+                    <input
+                      type="text"
+                      name="shipping-country"
+                      id="shipping-country"
+                    />
+                    <input type="submit" value="Submit" />
+                  </div>
+                  <div className=" flex-48 billing-address margin-center">
+                    <h2 className="fs-28">Billing Address</h2>
+                    <input
+                      type="checkbox"
+                      checked={billingAsShippingAddress}
+                      onChange={this.handleChange}
+                      className="check-box"
+                      id="check"
+                    />
+                    <label className="check-label" htmlFor="check">
+                      Same as Shipping Address
+                    </label>
+                    <label htmlFor="billing-address">Address</label>
+                    <input
+                      type="text"
+                      name="billing-address"
+                      id="billing-address"
+                      value={
+                        billingAsShippingAddress
+                          ? document.getElementById('shipping-address').value
+                          : ''
+                      }
+                      readOnly={billingAsShippingAddress}
+                    />
+                    <label htmlFor="billing-zipcode">Zip/Postal code</label>
+                    <input
+                      type="number"
+                      name="billing-zipcode"
+                      id="billing-zipcode"
+                      value={
+                        billingAsShippingAddress
+                          ? document.getElementById('shipping-zipcode').value
+                          : ''
+                      }
+                      readOnly={billingAsShippingAddress}
+                    />
+                    <label htmlFor="billing-city">City</label>
+                    <input
+                      type="text"
+                      name="billing-city"
+                      id="billing-city"
+                      value={
+                        billingAsShippingAddress
+                          ? document.getElementById('shipping-city').value
+                          : ''
+                      }
+                      readOnly={billingAsShippingAddress}
+                    />
+                    <label htmlFor="billing-country">Country</label>
+                    <input
+                      type="text"
+                      name="billing-country"
+                      id="billing-country"
+                      value={
+                        billingAsShippingAddress
+                          ? document.getElementById('shipping-country').value
+                          : ''
+                      }
+                      readOnly={billingAsShippingAddress}
+                    />
+                  </div>
+                </div>
+              </form>
+            </>
+          );
+        }
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
