@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/51a7cc97b5.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div class="container" id="root"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            currentStep: 1,
+            firstname: '',
+            lastname: '',
+            email: '',
+            address: '',
+            dob: '',
+            message: '',
+            checkone: false,
+            checktwo: false,
+            option1: false,
+            option2: false,
+            formSubmitted: false,
+            errors: {
+              firstname: '',
+              lastname: '',
+              email: '',
+              address: '',
+              dob: '',
+              message: '',
+            },
+          };
+        }
+
+        handleChange = (event) => {
+          const { name, value } = event.target;
+          this.setState({
+            [name]: value,
+          });
+        };
+
+        nextStep = () => {
+          let currentStep = this.state.currentStep;
+          this.setState({
+            currentStep: currentStep >= 2 ? 3 : currentStep + 1,
+          });
+        };
+
+        prevStep = () => {
+          let currentStep = this.state.currentStep;
+          this.setState({
+            currentStep: currentStep <= 1 ? 1 : currentStep - 1,
+          });
+          console.log(currentStep);
+        };
+
+        nextButton = () => {
+          let currentStep = this.state.currentStep;
+          if (currentStep < 3) {
+            return (
+              <button
+                className="next-btn"
+                type="button"
+                onClick={this.nextStep}
+              >
+                Next Step
+              </button>
+            );
+          }
+          return null;
+        };
+
+        prevButton = () => {
+          let currentStep = this.state.currentStep;
+          if (currentStep !== 1) {
+            return (
+              <button
+                className="prev-btn"
+                type="button"
+                onClick={this.prevStep}
+              >
+                Back
+              </button>
+            );
+          }
+          return null;
+        };
+
+        handleClick = (checkboxName) => {
+          event.preventDefault();
+          console.log('Image clicked');
+          const deselectedCheckboxName =
+            checkboxName === 'checkone' ? 'checktwo' : 'checkone';
+          this.setState((prevState) => ({
+            [checkboxName]: !prevState[checkboxName],
+            [deselectedCheckboxName]: false,
+          }));
+        };
+
+        handleClickOptions = (optionClicked) => {
+          event.preventDefault();
+          console.log('option clicked');
+          const otherOption =
+            optionClicked === 'option1' ? 'option2' : 'option1';
+
+          this.setState((prevState) => ({
+            [optionClicked]: !prevState[optionClicked],
+            [otherOption]: false,
+          }));
+        };
+     
+        validateEmail = (email) => {
+          const re =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return re.test(email);
+        };
+
+
+        validateDate = (dateString) => {
+          const pattern = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
+          return pattern.test(dateString);
+        };
+
+        handleInput = ({ target }) => {
+          let { name, value } = target;
+          //   let element = this.state[name];
+          let errors = this.state.errors;
+
+          switch (name) {
+            case 'firstname':
+              errors.firstname =
+                value.length < 4
+                  ? 'firstname must be at least 3 characters'
+                  : '';
+              break;
+            case 'lastname':
+              errors.lastname =
+                value.length < 4
+                  ? 'lastname must be at least 3 characters'
+                  : '';
+              break;
+            case 'dob':
+              errors.dob = this.validateDate(value)
+                ? ''
+                : 'Please enter a valid date(DD-MM-YYYY)';
+            case 'email':
+              errors.email = this.validateEmail(value)
+                ? ''
+                : 'Email is not Valid';
+              break;
+            case 'address':
+              errors.address =
+                value.length < 10
+                  ? 'address must be at least 10 characters'
+                  : '';
+              break;
+            case 'message':
+              errors.message =
+                value.length < 10
+                  ? 'message should be atleast 10  caharacters'
+                  : '';
+              break;
+            default:
+              break;
+          }
+          this.setState({ errors, [name]: value });
+          //   console.dir(target)
+        };
+
+        validateForm = () => {
+          const { firstname, lastname, email, address, dob, message } =
+            this.state;
+          const errors = {
+            firstname: firstname.trim() === '' ? 'firstname is required' : '',
+            lastname: lastname.trim() === '' ? 'lastname is required' : '',
+            dob:
+              dob.trim() === ''
+                ? 'date of birth is required'
+                : !this.validateDate(dob)
+                ? 'Please enter a valid date (DD-MM-YYYY)'
+                : '',
+
+            email: email.trim() === '' ? 'Email is required' : '',
+            address: address.trim() === '' ? 'address is required' : '',
+            message: message.trim() === '' ? 'message is required' : '',
+          };
+
+          this.setState({ errors });
+
+          return Object.values(errors).every((error) => error === '');
+        };
+
+        handleSubmit = (event) => {
+          event.preventDefault();
+
+          const isValid = this.validateForm();
+
+          if (isValid) {
+            alert('Form submitted');
+          } else {
+            alert('Form validation failed');
+          }
+        };
+
+        submitButton = () => {
+          let currentStep = this.state.currentStep;
+          if (currentStep === 3) {
+            return (
+              <input
+                className="next-btn"
+                type="submit"
+                value="Submit"
+              />
+            );
+          }
+          return null;
+        };
+
+        render() {
+          return (
+            <>
+              <div className="flex justify-between main-box">
+                <div className="flex-38">
+                  {this.state.currentStep === 1 && (
+                    <img
+                      className="img-1"
+                      src="https://media.istockphoto.com/id/109147371/vector/an-illustration-of-an-open-gift-box-with-gold-ribbon.jpg?s=612x612&w=0&k=20&c=XKOwH292UNQ4tbZGuznjqKznQnHCEABBkJwbgCjIvyc="
+                      alt=""
+                    />
+                  )}
+                  {this.state.currentStep === 2 && (
+                    <img className="img-1" src="./assets/msg.jpg" alt="" />
+                  )}
+                  {this.state.currentStep === 3 && (
+                    <img className="img-1" src="./assets/three.jpg" alt="" />
+                  )}
+                </div>
+                <div className="flex-60">
+                  <form onSubmit={this.handleSubmit}>
+                    <div className="flex page-title">
+                      <h2>
+                        <span
+                          className={
+                            this.state.currentStep === 1 ? 'step-no' : 'no-step'
+                          }
+                        >
+                          1
+                        </span>{' '}
+                        Sign Up
+                      </h2>
+                      <h2>
+                        <span
+                          className={
+                            this.state.currentStep === 2 ? 'step-no' : 'no-step'
+                          }
+                        >
+                          2
+                        </span>{' '}
+                        Message
+                      </h2>
+                      <h2>
+                        <span
+                          className={
+                            this.state.currentStep === 3 ? 'step-no' : 'no-step'
+                          }
+                        >
+                          3
+                        </span>{' '}
+                        Checkbox
+                      </h2>
+                    </div>
+                    <p className="step-count">Step{this.state.currentStep}/3</p>
+                    {this.state.currentStep === 1 && (
+                      <h2 className="title">Sign UP</h2>
+                    )}
+                    {this.state.currentStep === 2 && (
+                      <h2 className="title">Message</h2>
+                    )}
+                    {this.state.currentStep === 3 && (
+                      <h2 className="title">Checkbox</h2>
+                    )}
+
+                    <Step1
+                      currentStep={this.state.currentStep}
+                      handleInput={this.handleInput}
+                      firstname={this.state.firstname}
+                      lastname={this.state.lastname}
+                      email={this.state.email}
+                      address={this.state.address}
+                      dob={this.state.dob}
+                      errors={this.state.errors}
+                    />
+                    <Step2
+                      currentStep={this.state.currentStep}
+                      handleChange={this.handleChange}
+                      handleInput={this.handleInput}
+                      message={this.state.message}
+                      errors={this.state.errors}
+                    />
+                    <Step3
+                      currentStep={this.state.currentStep}
+                      checkone={this.state.checkone}
+                      checktwo={this.state.checktwo}
+                      handleChange={this.handleChange}
+                      handleClick={this.handleClick}
+                      handleClickOptions={this.handleClickOptions}
+                    />
+                    <div className="button-container">
+                      {this.prevButton()}
+
+                      {this.nextButton()}
+
+                      {this.submitButton()}
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </>
+          );
+        }
+      }
+
+      function Step1(props) {
+        const { errors } = props;
+        if (props.currentStep !== 1) {
+          return null;
+        }
+        return (
+          <>
+            <div className="grid-container">
+              <div className="grid-item">
+                <label htmlFor="firstname">Fisrt Name</label>
+                <input
+                  type="text"
+                  value={props.firstname}
+                  onChange={props.handleInput}
+                  name="firstname"
+                  id="firstname"
+                  className={errors.firstname && 'error'}
+                />
+                <span className="error">{errors.firstname}</span>
+              </div>
+              <div className="grid-item">
+                <label htmlFor="lastname">Last Name</label>
+                <input
+                  type="text"
+                  value={props.lastname}
+                  onChange={props.handleInput}
+                  name="lastname"
+                  id="lastname"
+                  className={errors.lastname && 'error'}
+                />
+
+                <span className="error">{errors.lastname}</span>
+              </div>
+              <div className="grid-item">
+                <label htmlFor="dob">Date of Birth</label>
+                <input
+                  type="date"
+                  value={props.dob}
+                  onChange={props.handleInput}
+                  name="dob"
+                  id="dob"
+                  className={errors.dob && 'error'}
+                />
+                <span className="error">{errors.dob}</span>
+              </div>
+              <div className="grid-item">
+                <label htmlFor="email">Email Address </label>
+                <input
+                  type="email"
+                  value={props.email}
+                  onChange={props.handleInput}
+                  name="email"
+                  id="eamil"
+                  className={errors.email && 'error'}
+                />
+                <span className="error">{errors.email}</span>
+              </div>
+            </div>
+            <div className="address">
+              <label className="label-address" htmlFor="address">
+                Address
+              </label>
+              <input
+                type="text"
+                value={props.address}
+                onChange={props.handleInput}
+                name="address"
+                id="address"
+                className={errors.address && 'error'}
+              />
+              <span className="error">{errors.address}</span>
+            </div>
+            <hr />
+          </>
+        );
+      }
+      function Step2(props) {
+        const { errors } = props;
+        if (props.currentStep !== 2) {
+          return null;
+        }
+
+        return (
+          <div>
+            <label className="message" htmlFor="message">
+              Message
+            </label>
+            <textarea
+              value={props.message}
+              onChange={props.handleInput}
+              name="message"
+              id="message"
+              cols="30"
+              rows="10"
+              placeholder="your message"
+              className={errors.message && 'error'}
+            ></textarea>
+            <span className="error">{errors.message}</span>
+            <div className="flex align-center">
+              <input
+                type="checkbox"
+                name="option1"
+                className="round-checkbox"
+                id="opt-in-1"
+                value="option1"
+                checked={props.option1}
+                onChange={props.handleChange}
+              />
+              <label htmlFor="opt-in-1" className="round-checkbox-label">
+                <div className="round-checkbox-inner"></div>
+              </label>
+              <span className="options-msg">The Number one choice</span>
+              <input
+                type="checkbox"
+                name="option2"
+                className="round-checkbox"
+                id="opt-in-2"
+                value="option2"
+                checked={props.option2}
+                onChange={props.handleChange}
+              />
+              <label htmlFor="opt-in-2" className="round-checkbox-label">
+                <div className="round-checkbox-inner"></div>
+              </label>{' '}
+              <span className="options-msg">The Number two choice</span>
+            </div>
+          </div>
+        );
+      }
+
+      function Step3(props) {
+        if (props.currentStep !== 3) {
+          return null;
+        }
+        return (
+          <>
+            <div>
+              <div className="flex justify-between">
+                <div>
+                  <label htmlFor="checkone">
+                    <div
+                      id="box"
+                      className={props.checkone ? 'img' : 'no-bc'}
+                      onClick={() => props.handleClick('checkone')}
+                    >
+                      <img
+                        id="img"
+                        src="./assets/trial4.png"
+                        alt="Checkbox Image"
+                      />
+                    </div>
+                  </label>
+                  <input
+                    type="checkbox"
+                    name="checkone"
+                    id="checkone"
+                    checked={props.checkone}
+                    onChange={props.handleChange}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="checktwo">
+                    <div
+                      id="box"
+                      className={props.checktwo ? 'img' : 'no-bc'}
+                      onClick={() => props.handleClick('checktwo')}
+                    >
+                      <img
+                        id="img"
+                        src="assets/trial7.png"
+                        alt="Checkbox Image"
+                      />
+                    </div>
+                  </label>
+                  <input
+                    type="checkbox"
+                    name="checktwo"
+                    id="checktwo"
+                    checked={props.checktwo}
+                    onChange={props.handleChange}
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="item">
+                  <input
+                    type="checkbox"
+                    name="option1"
+                    className="round-checkbox"
+                    id="opt-in-1"
+                    value="option1"
+                    checked={props.option1}
+                    onClick={() => props.handleClickOptions('option1')}
+                  />
+                  <label htmlFor="opt-in-1" className="round-checkbox-label">
+                    <div className="round-checkbox-inner"></div>
+                  </label>
+                  <span>I want add this option.</span>
+                </div>
+                <div className=" text-center item">
+                  <input
+                    type="checkbox"
+                    name="option2"
+                    className="round-checkbox"
+                    id="opt-in-2"
+                    value="option2"
+                    checked={props.option2}
+                    onClick={() => props.handleClickOptions('option2')}
+                  
+                  />
+                  <label htmlFor="opt-in-2" className="round-checkbox-label ">
+                    <div className="round-checkbox-inner"></div>
+                  </label>
+                  <span>
+                    Let me click this checkbox and select some cool stuff
+                  </span>
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
+
