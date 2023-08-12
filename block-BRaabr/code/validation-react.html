@@ -74,6 +74,7 @@
             default:
               break;
           }
+          errors[name] = errorMessage;
           this.setState({ errors, [name]: value });
           //   console.dir(target)
         };
