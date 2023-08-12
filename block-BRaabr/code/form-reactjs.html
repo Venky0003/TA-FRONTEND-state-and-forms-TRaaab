@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script> -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div class="container" id="root"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            inputText: '',
+          };
+        }
+
+        handleChange = (event) => {
+          this.setState({ inputText: event.target.value });
+        };
+
+        handleSubmit = (event) => {
+          event.preventDefault();
+          alert('your function is successfull ' + ' ' + this.state.inputText);
+        };
+
+        render() {
+          return (
+            <>
+              <form className="text-center" onSubmit={this.handleSubmit}>
+                <div>
+                  <label className="block" htmlFor="text">
+                    Text Input
+                  </label>
+                  <input
+                    type="text"
+                    id="text"
+                    placeholder="text type input"
+                    value={this.state.inputText}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div>
+                  <label className="block" htmlFor="date">
+                    Date Input
+                  </label>
+                  <input id="date" type="date" />
+                </div>
+                <div>
+                  <label className="block" htmlFor="file">
+                    File Input
+                  </label>
+                  <input id="file" type="file" />
+                </div>
+                <div>
+                  <label className="block" htmlFor="readonly">
+                    Read-Only Input
+                  </label>
+                  <input
+                    id="readonly"
+                    type="text"
+                    value="Hello Forms"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label className="block" htmlFor="disabled">
+                    Disabled Input
+                  </label>
+                  <input type="text" id="disabled" disabled />
+                </div>
+                <div>
+                  <label className="block" htmlFor="bio">
+                    Textarea
+                  </label>
+                  <textarea name="" id="bio" cols="30" rows="4"></textarea>
+                </div>
+
+                <div>
+                  <label className="block" htmlFor="text-disabled">
+                    Textarea Disabled
+                  </label>
+                  <textarea id="text-disabled" disabled></textarea>
+                </div>
+                <input type="submit" value="submit" />
+              </form>
+            </>
+          );
+        }
+      }
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

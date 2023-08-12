@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div class="container" id="root"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            username: '',
+            password: '',
+            email: '',
+            cpassword: '',
+            errors: {
+              username: '',
+              email: '',
+              password: '',
+              cpassword: '',
+            },
+          }; 
+        }
+
+        validateEmail = (email) => {
+          const re =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return re.test(email);
+        };
+
+        handleInput = ({ target }) => {
+          let { name, value } = target;
+          let element = this.state[name];
+          let errors = this.state.errors;
+
+          switch (name) {
+            case 'username':
+              errors.username =
+                value.length < 4
+                  ? 'username must be at least 3 characters'
+                  : '';
+              break;
+            case 'email':
+              errors.email = this.validateEmail(value)
+                ? ''
+                : 'Email is not Valid';
+              break;
+            case 'password':
+              errors.password =
+                value.length < 6
+                  ? 'password must be at least 6 characters'
+                  : '';
+              break;
+            case 'cpassword':
+              errors.cpassword =
+                value.length < this.state.password.length
+                  ? 'cpassword  is required'
+                  : '';
+              break;
+            default:
+              break;
+          }
+          errors[name] = errorMessage;
+          this.setState({ errors, [name]: value });
+          //   console.dir(target)
+        };
+
+        validateForm = () => {
+          const { username, email, password, cpassword } = this.state;
+          const errors = {
+            username: username.trim() === '' ? 'Username is required' : '',
+            email:
+              email.trim() === ''
+                ? 'Email is required'
+                : !this.validateEmail(email)
+                ? 'Email is not valid'
+                : '',
+            password:
+              password.trim() === ''
+                ? 'Password is required'
+                : password.length < 6
+                ? 'Password must be at least 6 characters'
+                : '',
+            cpassword:
+              cpassword.trim() === ''
+                ? 'Confirm Password is required'
+                : cpassword.length < password.length
+                ? 'Confirm Password should match Password'
+                : '',
+          };
+
+          this.setState({ errors });
+
+          return Object.values(errors).every((error) => error === '');
+        };
+
+        handleSubmit = (event) => {
+          event.preventDefault();
+          const isValid = this.validateForm();
+
+          if (isValid) {
+            console.log('Form submitted successfully');
+          } else {
+            console.log('Form validation failed');
+          }
+        };
+
+        render() {
+          let { username, email, password, cpassword } = this.state.errors;
+          return (
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor="user">Username</label>
+              <input
+                value={this.state.username}
+                onChange={this.handleInput}
+                type="text"
+                name="username"
+                id="user"
+                placeholder="Enter your name"
+                className={username && 'error'}
+              />
+              <span>{username}</span>
+              <label htmlFor="email">Email</label>
+              <input
+                value={this.state.email}
+                onChange={this.handleInput}
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                className={email && 'error'}
+              />
+              <span>{email}</span>
+              <label htmlFor="password">Password</label>
+              <input
+                value={this.state.password}
+                onChange={this.handleInput}
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter Password"
+                className={password && 'error'}
+              />
+              <span>{password}</span>
+              <label htmlFor="cpassword">Confirm Password</label>
+              <input
+                value={this.state.cpassword}
+                onChange={this.handleInput}
+                type="password"
+                name="cpassword"
+                id="cpassword"
+                placeholder="Enter Password again"
+                className={cpassword && 'error'}
+              />
+              <span>{cpassword}</span>
+              <input className="block" type="submit" value="Submit" />
+            </form>
+          );
+        }
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

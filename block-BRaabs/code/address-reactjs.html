@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            billinAsShippingAddress: false,
+          };
+        }
+
+        handleChange = (event) => {
+          this.setState({
+            billinAsShippingAddress: event.target.checked,
+          });
+        };
+
+        render() {
+          const { billinAsShippingAddress } = this.state;
+          return (
+            <>
+              <form>
+                <div>
+                  <h2>Shipping Address</h2>
+                  <label htmlFor="shipping-address">Address</label>
+                  <input
+                    type="text"
+                    name="shipping-address"
+                    id="shipping-address"
+                  />
+                  <label htmlFor="shipping-zipcode">Zip/Postal code</label>
+                  <input
+                    type="number"
+                    name="shipping-zipcode"
+                    id="shipping-zipcode"
+                  />
+                  <label htmlFor="shipping-city">City</label>
+                  <input type="text" name="shipping-city" id="shipping-city" />
+                  <label htmlFor="shipping-country">Country</label>
+                  <input
+                    type="text"
+                    name="shipping-country"
+                    id="shipping-country"
+                  />
+                </div>
+                <div>
+                  <h2>Billing Address</h2>
+                  <input
+                    type="checkbox"
+                    checked={billinAsShippingAddress}
+                    onChange={this.handleChange}
+                  />
+                  <label htmlFor="billing-address">Address</label>
+                  <input
+                    type="text"
+                    name="billing-address"
+                    id="billing-address"
+                    value={
+                      billingAsShippingAddress
+                        ? document.getElementById('shipping-address').value
+                        : ''
+                    }
+                    readOnly={this.billingAsShippingAddress}
+                  />
+                  <label htmlFor="billing-zipcode">Zip/Postal code</label>
+                  <input
+                    type="number"
+                    name="billing-zipcode"
+                    id="billing-zipcode"
+                    value={
+                      billingAsShippingAddress
+                        ? document.getElementById('shipping-zipcode').value
+                        : ''
+                    }
+                    readOnly={this.billingAsShippingAddress}
+                  />
+                  <label htmlFor="billing-city">City</label>
+                  <input
+                    type="text"
+                    name="billing-city"
+                    id="billing-city"
+                    value={
+                      billingAsShippingAddress
+                        ? document.getElementById('shipping-city').value
+                        : ''
+                    }
+                    readOnly={this.billingAsShippingAddress}
+                  />
+                  <label htmlFor="billing-country">Country</label>
+                  <input
+                    type="text"
+                    name="billing-country"
+                    id="billing-country"
+                    value={
+                      billingAsShippingAddress
+                        ? document.getElementById('shipping-country').value
+                        : ''
+                    }
+                    readOnly={this.billingAsShippingAddress}
+                  />
+                </div>
+              </form>
+            </>
+          );
+        }
+      }
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
