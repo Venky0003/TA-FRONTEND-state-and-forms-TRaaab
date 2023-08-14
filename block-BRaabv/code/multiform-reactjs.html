@@ -319,6 +319,8 @@
                       currentStep={this.state.currentStep}
                       checkone={this.state.checkone}
                       checktwo={this.state.checktwo}
+                      option1= {this.state.option1}
+                      option2= {this.state.option2}
                       handleChange={this.handleChange}
                       handleClick={this.handleClick}
                       handleClickOptions={this.handleClickOptions}
@@ -530,6 +532,7 @@
                     id="opt-in-1"
                     value="option1"
                     checked={props.option1}
+                    onChange={props.handleChange}
                     onClick={() => props.handleClickOptions('option1')}
                   />
                   <label htmlFor="opt-in-1" className="round-checkbox-label">
@@ -545,6 +548,7 @@
                     id="opt-in-2"
                     value="option2"
                     checked={props.option2}
+                    onChange={props.handleChange}
                     onClick={() => props.handleClickOptions('option2')}
                   
                   />
